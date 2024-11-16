@@ -1,0 +1,58 @@
+---
+- name: update and install app on server1
+  hosts: server1
+  become: yes
+
+  tasks:
+  - name: update the server1
+    ansible.builtin.apt:
+      update_cache: yes
+
+  # - name: install Datadog Agent
+  #   ansible.builtin.apt:
+  #     name: datadog
+  #     state: latest
+
+  - name: install datadog shell
+    ansible.builtin.shell: DD_API_KEY=5a676c4b03deca9de614b24dfd9cf983 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+    args:
+      executable: /bin/bash
+      
+- name: update and install app on server2
+  hosts: server2
+  become: yes
+
+  tasks:
+  - name: update the server1
+    ansible.builtin.apt:
+      update_cache: yes
+
+  # - name: install datadog controller
+  #   ansible.builtin.apt:
+  #     name: datadog
+  #     state: latest
+
+  - name: install datadog shell
+    ansible.builtin.shell: DD_API_KEY=5a676c4b03deca9de614b24dfd9cf983 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+    args:
+      executable: /bin/bash
+
+- name: update and install app on db1
+  hosts: db1
+  become: yes
+
+  tasks:
+  - name: update the db1
+    ansible.builtin.yum:
+      name: '*'
+      state: latest
+
+  # - name: install datadog controller
+  #   ansible.builtin.yum:
+  #     name: datadog
+  #     state: latest
+
+  - name: install datadog shell
+    ansible.builtin.shell: DD_API_KEY=5a676c4b03deca9de614b24dfd9cf983 DD_SITE="us5.datadoghq.com" bash -c "$(curl -L https://install.datadoghq.com/scripts/install_script_agent7.sh)"
+    args:
+      executable: /bin/bash

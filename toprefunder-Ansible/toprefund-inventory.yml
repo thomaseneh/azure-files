@@ -1,0 +1,35 @@
+all:
+  children:
+    servers:
+      hosts:
+        server1:
+          ansible_host: 40.86.6.142
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: demo-key.pem
+
+        server2:
+          ansible_host: 40.86.7.152
+          ansible_user: Administrator
+          ansible_password: Pas3w@rd
+          ansible_connection: winrm
+          ansible_winrm_transport: basic  # Optional based on setup
+          ansible_port: 5986
+        
+        # server2: 
+        #   ansible_host: 3.89.227.134
+
+      vars:
+        ansible_user: ubuntu
+    db:
+      hosts:
+        db1:
+          ansible_user: ec2-user
+          ansible_host: 54.161.115.155   
+           
+    server_db:
+      children:
+        servers:
+        db:
+      vars:
+        ansible_ssh_private_key_file: demo-key.pem
+
