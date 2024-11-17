@@ -14,7 +14,15 @@ all:
           ansible_connection: winrm
           ansible_winrm_transport: basic  # Optional based on setup
           ansible_port: 5986
-        
+         # server3:
+            #   ansible_host: 20.12.242.225
+            #   ansible_user: adminuser
+            #   ansible_password: Mine@!23
+            #   ansible_connection: winrm
+    #   ansible_winrm_transport: basic
+    #   ansible_winrm_server_cert_validation: ignore
+    #   ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q adminuser@52.176.62.164"'
+    #   ansible_port: 22
         # server2: 
         #   ansible_host: 3.89.227.134
 

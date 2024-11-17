@@ -1,0 +1,44 @@
+# all:
+#   hosts:
+#     # server1:
+#     #   ansible_host: 20.106.57.139
+#     #   ansible_user: azureuser # Specific SSH user for server1
+#     #   ansible_ssh_private_key_file: azurekey.pem
+
+#     # server2:
+#     #   ansible_host: 52.91.14.70
+#     #   ansible_user: ubuntu # Specific SSH user for server2
+#     #   ansible_ssh_private_key_file: awskey.pem
+
+#     #   bastion-host:
+#     #     ansible_host: 18.205.238.254 # Bastion host for proxying
+#     #     ansible_user: ubuntu # User to SSH into bastion
+#     #     ansible_ssh_private_key_file: awskey.pem
+
+#     # vars:
+#     #   ansible_ssh_user: ubuntu # Default SSH user (for private-vm or any other host without specific ansible_user)
+#     #   ansible_ssh_private_key_file: awskey.pem # Default private key path
+#     #   ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q ubuntu@18.205.238.254"' # Bastion configuration
+
+#     # children:
+#     #   bastion:
+#     #     hosts:
+#     #       bastion-host:
+#     #         ansible_host: 18.205.238.254
+
+#     #   private_vms:
+#     #     hosts:
+#     #       private-vm:
+#     #         ansible_host: 172.31.23.1
+#     #         ansible_user: ubuntu # Override default SSH user for private-vm
+
+all:
+  hosts:
+    private-vm:
+      ansible_host: 172.31.23.1
+      ansible_user: ubuntu
+      ansible_ssh_private_key_file: awskey.pem
+      ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q ubuntu@18.205.238.254"'
+  vars:
+    ansible_ssh_user: ubuntu
+    ansible_ssh_private_key_file: awskey.pem

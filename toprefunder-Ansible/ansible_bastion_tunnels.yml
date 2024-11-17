@@ -1,0 +1,11 @@
+---
+bastion_tunnels:
+  hosts:
+    server01:
+      ansible_host: 10.0.1.4
+      ansible_port: 63933
+      ansible_user: adminuser
+      resource_group: DevOps
+    server02:
+      ansible_port: 63932
+      resource_group: DevOps
