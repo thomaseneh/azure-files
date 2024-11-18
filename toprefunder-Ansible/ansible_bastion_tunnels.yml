@@ -2,10 +2,21 @@
 bastion_tunnels:
   hosts:
     server01:
-      ansible_host: 10.0.1.4
+      ansible_host: 10.0.1.8
       ansible_port: 63933
-      ansible_user: adminuser
+      ansible_user: azureuser
       resource_group: DevOps
+
     server02:
+      ansible_host: 10.0.1.9
       ansible_port: 63932
+      ansible_user: azureuser
       resource_group: DevOps
+
+    server03:
+      ansible_host: 10.0.1.4
+      ansible_user: adminuser
+      ansible_password: Mine@!23
+      ansible_connection: winrm
+      ansible_winrm_transport: basic
+      ansible_port: 5986

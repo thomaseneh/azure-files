@@ -1,0 +1,3 @@
+plugin: azure_rm
+subscription_id: a5059891-462a-4122-a34e-4731a8911cfe
+resource_group: DevOps
