@@ -365,3 +365,10 @@
     }
   ]
 }
+
+
+az deployment group create \
+  --resource-group MyResourceGroup \
+  --template-file template.json \
+  --parameters adminUsername=myadminuser adminPasswordOrKey="ssh-rsa AAAAB3...rest-of-your-public-key... user@host"
+
