@@ -33,7 +33,7 @@ resource "azurerm_lb_probe" "healthprobe" {
   loadbalancer_id     = azurerm_lb.loadbalancer.id
   name                = "lbProbe"
   protocol            = "Tcp"
-  port                = 9000
+  port                = 8080 # must match the backend port the application is running on
   interval_in_seconds = 5
   number_of_probes    = 2
 }
@@ -43,8 +43,8 @@ resource "azurerm_lb_rule" "lbrule" {
   loadbalancer_id                = azurerm_lb.loadbalancer.id
   name                           = "lbRule"
   protocol                       = "Tcp"
-  frontend_port                  = 9000
-  backend_port                   = 9000
+  frontend_port                  = 80 # if my javascript application runs on port 80
+  backend_port                   = 8080 # if my java backend application runs on port 8080
   frontend_ip_configuration_name = "LoadBalancerFrontEnd"
   backend_address_pool_ids        = [azurerm_lb_backend_address_pool.backendpool.id]
   probe_id                       = azurerm_lb_probe.healthprobe.id
