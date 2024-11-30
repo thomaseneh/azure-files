@@ -1,36 +1,69 @@
+terraform {
+  required_providers {
+    azurerm = {
+      version = ">=4.9.0"
+    }
+  }
+}
+provider "azurerm" {
+  resource_provider_registrations = "none"
+  features {}
+}
+
+data "azurerm_resource_group" "resourceGroup" {
+  name = "demoResourceG"
+}
 
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  name                = "toprefunder_aks1"
-  location            = var.location
-  resource_group_name = var.resourceGroup
-  dns_prefix          = "toprefunderdns1"
+  name                = "demoAKS"
+  resource_group_name = data.azurerm_resource_group.resourceGroup.name
+  location            = data.azurerm_resource_group.resourceGroup.location
+  dns_prefix          = "aksDNS"
+  kubernetes_version  = "1.29.9"
 
   default_node_pool {
-    name       = "refundecrnod"
-    os_sku = "Ubuntu"
+    name                 = "demonode"
+    os_sku               = "Ubuntu"
     auto_scaling_enabled = true
-    min_count = 1
-    max_count = 3
-    max_pods = 120
-    vm_size    = "Standard_D4s_v3"
-    zones = ["1","3"]
-    os_disk_type        = "Managed"
+    min_count            = 1
+    max_count            = 3
+    max_pods             = 120
+    vm_size              = "Standard_D4s_v3"
+    zones                = ["1", "3"]
+    os_disk_type         = "Managed"
   }
-#   auto_upgrade_profile {
-#     upgrade_channel = "patch"
-#   }
-
-  network_profile {
-    network_plugin = "azure"
-    # network_policy = "none" 
-  }
+  #   auto_upgrade_profile {
+  #     upgrade_channel = "patch"
+  #   }
 
   identity {
     type = "SystemAssigned"
   }
+  network_profile {
+    network_plugin = "azure"
+    # network_policy = "none" 
+  }
+  # Enable OIDC and Workload Identity
+  oidc_issuer_enabled       = true
+  workload_identity_enabled = true
+
+  key_vault_secrets_provider {
+    secret_rotation_enabled = false
+  }
+
+  maintenance_window {
+    allowed {
+      day   = "Sunday"
+      hours = [6]
+    }
+  }
+
+  # Enable Image Cleaner
+  image_cleaner_enabled        = true
+  image_cleaner_interval_hours = 720
 
   tags = {
-    Environment = "Production"
+    Environment = "Dev/Test"
   }
 }
 
