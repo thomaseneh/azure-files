@@ -39,6 +39,10 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
   identity {
     type = "SystemAssigned"
   }
+
+  # Specify a custom node resource group
+  node_resource_group = "MC_Resource-Group"
+
   network_profile {
     network_plugin = "azure"
     # network_policy = "none" 
@@ -64,6 +68,19 @@ resource "azurerm_kubernetes_cluster" "aks_cluster" {
 
   tags = {
     Environment = "Dev/Test"
+  }
+}
+
+provider "kubernetes" {
+  host                   = azurerm_kubernetes_cluster.aks_cluster.kube_config[0].host
+  client_certificate     = base64decode(azurerm_kubernetes_cluster.aks_cluster.kube_config[0].client_certificate)
+  client_key             = base64decode(azurerm_kubernetes_cluster.aks_cluster.kube_config[0].client_key)
+  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks_cluster.kube_config[0].cluster_ca_certificate)
+}
+
+resource "kubernetes_namespace" "reactapp" {
+  metadata {
+    name = "reactapp"
   }
 }
 
